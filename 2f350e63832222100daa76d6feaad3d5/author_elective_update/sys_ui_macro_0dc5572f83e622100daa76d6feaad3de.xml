@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_macro">
+    <sys_ui_macro action="DELETE">
+        <active>true</active>
+        <category>general</category>
+        <description/>
+        <media_type/>
+        <name>attached_payload</name>
+        <scoped_name>x_688732_custom_ap_attached_payload</scoped_name>
+        <sys_class_name>sys_ui_macro</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-07-11 15:59:49</sys_created_on>
+        <sys_id>0dc5572f83e622100daa76d6feaad3de</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>attached_payload</sys_name>
+        <sys_package display_value="Custom App" source="x_688732_custom_ap">2f350e63832222100daa76d6feaad3d5</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Custom App">2f350e63832222100daa76d6feaad3d5</sys_scope>
+        <sys_update_name>sys_ui_macro_0dc5572f83e622100daa76d6feaad3de</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-07-11 16:09:49</sys_updated_on>
+        <xml><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+
+</j:jelly>]]></xml>
+    </sys_ui_macro>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Custom App">2f350e63832222100daa76d6feaad3d5</application>
+        <file_path/>
+        <instance_id>303c7731db5e865002022a5913961918</instance_id>
+        <instance_name>dev272438</instance_name>
+        <name>sys_ui_macro_0dc5572f83e622100daa76d6feaad3de</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ui_macro"&gt;&lt;sys_ui_macro action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;category&gt;general&lt;/category&gt;&lt;description/&gt;&lt;media_type/&gt;&lt;name&gt;attached_payload&lt;/name&gt;&lt;scoped_name&gt;x_688732_custom_ap_attached_payload&lt;/scoped_name&gt;&lt;sys_class_name&gt;sys_ui_macro&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2025-07-11 15:59:49&lt;/sys_created_on&gt;&lt;sys_id&gt;0dc5572f83e622100daa76d6feaad3de&lt;/sys_id&gt;&lt;sys_mod_count&gt;4&lt;/sys_mod_count&gt;&lt;sys_name&gt;attached_payload&lt;/sys_name&gt;&lt;sys_package display_value="Custom App" source="x_688732_custom_ap"&gt;2f350e63832222100daa76d6feaad3d5&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Custom App"&gt;2f350e63832222100daa76d6feaad3d5&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_macro_0dc5572f83e622100daa76d6feaad3de&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2025-07-11 16:09:49&lt;/sys_updated_on&gt;&lt;xml&gt;&lt;![CDATA[&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null"&gt;
+
+&lt;/j:jelly&gt;]]&gt;&lt;/xml&gt;&lt;/sys_ui_macro&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>204617422</payload_hash>
+        <record_name>attached_payload</record_name>
+        <reverted_from/>
+        <source>67350e63832222100daa76d6feaad3da</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-07-11 16:09:49</sys_created_on>
+        <sys_id>f11893af83e622100daa76d6feaad38a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>197fa4007670000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-07-11 16:09:49</sys_updated_on>
+        <type>Macro</type>
+        <update_guid>b91893af5ae62210beadbf0a82c56589</update_guid>
+        <update_guid_history>b91893af5ae62210beadbf0a82c56589:204617422,7697dfaf1de62210f0b2327a01c45ce2:-934301796,fbe6536fcde622104989b76df3021717:1809095141,72e5572f83e622105ec5c474a30f33e4:1576492770,9fc51b2f6ce62210914c78db637b731a:-960777917</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-07-11 16:23:04</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_macro">sys_ui_macro</sys_db_object>
+        <sys_id>4f05787b9e6b4f96853eb4526ae55204</sys_id>
+        <sys_metadata>0dc5572f83e622100daa76d6feaad3de</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>attached_payload</sys_name>
+        <sys_package display_value="Custom App" source="x_688732_custom_ap">2f350e63832222100daa76d6feaad3d5</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Custom App">2f350e63832222100daa76d6feaad3d5</sys_scope>
+        <sys_scope_delete display_value="">124dcbff2d7e453985089e71cbfbd9a1</sys_scope_delete>
+        <sys_update_name>sys_ui_macro_0dc5572f83e622100daa76d6feaad3de</sys_update_name>
+        <sys_update_version display_value="sys_ui_macro_0dc5572f83e622100daa76d6feaad3de">f11893af83e622100daa76d6feaad38a</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-07-11 16:23:04</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

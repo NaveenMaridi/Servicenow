@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function SequentialLocationMap($scope, $element, $timeout) {
+  var c = this;
+
+  c.mapLoaded = false;
+  c.map = null;
+  c.infoWindow = null;
+  c.markers = [];
+  c.polyline = null;
+
+  var googleApiKey = "AIzaSyB7AKyZsb-AXzCA7TBPgu6PoRI1oaAniS4"; // Your API key here
+
+  function loadGoogleMapsAPI(callback) {
+    if (typeof google === 'object' && typeof google.maps === 'object') {
+      console.log("Google Maps API already loaded");
+      callback();
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.src = "https://maps.googleapis.com/maps/api/js?key=" + googleApiKey;
+    script.async = true;
+    script.defer = true;
+
+    script.onload = function () {
+      console.log("Google Maps API script loaded");
+      callback();
+    };
+
+    script.onerror = function() {
+      console.error("Failed to load Google Maps API script.");
+      alert("Error loading Google Maps. Check your API key and internet connection.");
+    };
+
+    document.head.appendChild(script);
+  }
+
+  function addMarker(map, latLng, title, label, content, infoWindow) {
+    var marker = new google.maps.Marker({
+      position: latLng,
+      map: map,
+      title: title,
+      label: label,
+      animation: google.maps.Animation.DROP
+    });
+
+    marker.addListener('click', function () {
+      infoWindow.setContent(content);
+      infoWindow.open(map, marker);
+    });
+
+    return marker;
+  }
+
+  function clearMap() {
+    if (c.markers.length) {
+      for (var i = 0; i < c.markers.length; i++) {
+        c.markers[i].setMap(null);
+      }
+      c.markers = [];
+    }
+    if (c.polyline) {
+      c.polyline.setMap(null);
+      c.polyline = null;
+    }
+    if (c.infoWindow) {
+      c.infoWindow.close();
+    }
+  }
+
+  // Normalize longitude relative to baseLng so all points stay continuous around globe
+  function normalizeLng(lng, baseLng) {
+    while (lng - baseLng > 180) lng -= 360;
+    while (lng - baseLng < -180) lng += 360;
+    return lng;
+  }
+
+  function initMap() {
+    var mapElement = $element.find('#sequentialMap')[0];
+    if (!mapElement) {
+      console.warn("Map container #sequentialMap not found. Retrying in 100ms...");
+      $timeout(initMap, 100);
+      return;
+    }
+
+    if (!c.map) {
+      c.map = new google.maps.Map(mapElement, {
+        center: { lat: 20.5937, lng: 78.9629 },
+        zoom: 5,
+        zoomControl: true,
+        mapTypeControl: false,
+        streetViewControl: false,
+        fullscreenControl: true
+      });
+
+      var tileLayer = new google.maps.ImageMapType({
+        getTileUrl: function(coord, zoom) {
+          return "https://mt.google.com/vt/lyrs=m&x=" + coord.x + "&y=" + coord.y + "&z=" + zoom;
+        },
+        tileSize: new google.maps.Size(256, 256),
+        maxZoom: 19,
+        minZoom: 0,
+        name: "NoWrapMap",
+        opacity: 1,
+        noWrap: true
+      });
+
+      c.map.mapTypes.set('noWrapMap', tileLayer);
+      c.map.setMapTypeId('noWrapMap');
+
+      c.infoWindow = new google.maps.InfoWindow();
+
+      console.log("Map initialized");
+    }
+
+    clearMap();
+
+    var locations = $scope.data.locations || [];
+    if (locations.length === 0) {
+      console.warn("No locations to display on the map.");
+      return;
+    }
+
+    var pathCoordinates = [];
+    var baseLng = locations[0].lng;
+
+    for (var i = 0; i < locations.length; i++) {
+      var location = locations[i];
+      var normLng = normalizeLng(location.lng, baseLng);
+      var latLng = new google.maps.LatLng(location.lat, normLng);
+      pathCoordinates.push(latLng);
+
+      var contentString = '<div style="font-family: \'Segoe UI\', sans-serif; background-color: #343a40; padding: 15px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); min-width: 200px; max-width: 300px; color: #f8f9fa; line-height: 1.5;">' +
+        '<h4 style="margin-top: 0; margin-bottom: 10px; color: #17a2b8; font-size: 20px; font-weight: 700;">' + location.name + '</h4>' +
+        '<p style="margin-bottom: 6px; font-size: 14px;"><strong style="color: #adb5bd;">IP Address:</strong> ' + (location.ip || 'N/A') + '</p>' +
+        '<p style="margin-bottom: 0; font-size: 14px;"><strong style="color: #adb5bd;">Hostname:</strong> ' + (location.hostname || 'N/A') + '</p>' +
+        '</div>';
+
+      var marker = addMarker(c.map, latLng, location.name, (i + 1).toString(), contentString, c.infoWindow);
+      c.markers.push(marker);
+    }
+
+    // Create bounds and fit map viewport correctly with normalized longitudes
+    var bounds = new google.maps.LatLngBounds();
+    for (var j = 0; j < pathCoordinates.length; j++) {
+      bounds.extend(pathCoordinates[j]);
+    }
+    c.map.fitBounds(bounds);
+
+    c.polyline = new google.maps.Polyline({
+      path: pathCoordinates,
+      geodesic: true,
+      strokeColor: "#FF0000",
+      strokeOpacity: 0.8,
+      strokeWeight: 4
+    });
+    c.polyline.setMap(c.map);
+
+    c.mapLoaded = true;
+    $scope.$applyAsync();
+
+    console.log("Map fully loaded with locations");
+  }
+
+  function updateMap() {
+    loadGoogleMapsAPI(function() {
+      initMap();
+    });
+  }
+
+  $scope.$watchCollection(function() {
+    return c.locations;
+  }, function(newVal) {
+    if (newVal && newVal.length > 0) {
+      updateMap();
+    }
+  });
+
+  c.$onInit = function() {
+    updateMap();
+  };
+}
+]]></client_script>
+        <controller_as>c</controller_as>
+        <css>#sequentialMap {
+  height: 600px;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #dee2e6;
+  background: #f8f9fa;
+
+  @media (max-width: 768px) {
+    height: 400px;
+  }
+
+  @media (max-width: 480px) {
+    height: 300px;
+  }
+}
+
+.map-loader {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+  color: #555;
+  background: #f1f1f1;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.map-hidden {
+  visibility: hidden;
+  height: 0;
+}
+
+#sequentialMap {
+  height: 600px;
+  width: 100%;
+  display: block;
+}
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.response-widget {
+  display: block;
+  width: 100%;
+}
+
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>true</has_preview>
+        <id/>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>maps API</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  data.locations = [];
+  if (input && input.locations) {
+    try {
+      data.locations = JSON.parse(input.locations);
+    } catch (e) {
+      data.locations = [];
+    }
+  }
+})();
+]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-07-15 07:36:40</sys_created_on>
+        <sys_id>cd98ce74837222100daa76d6feaad378</sys_id>
+        <sys_mod_count>45</sys_mod_count>
+        <sys_name>maps API</sys_name>
+        <sys_package display_value="Custom App" source="x_688732_custom_ap">2f350e63832222100daa76d6feaad3d5</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Custom App">2f350e63832222100daa76d6feaad3d5</sys_scope>
+        <sys_update_name>sp_widget_cd98ce74837222100daa76d6feaad378</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-09-03 11:42:43</sys_updated_on>
+        <template><![CDATA[<!-- Loader shown until map is ready -->
+<div ng-if="!c.mapLoaded" class="map-loader">
+  Loading map, please wait...
+</div>
+
+<!-- Map container -->
+<div id="sequentialMap" ng-class="{'map-hidden': !c.mapLoaded}"></div>
+]]></template>
+    </sp_widget>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>cd98ce74837222100daa76d6feaad378</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-07-15 07:36:34</sys_created_on>
+        <sys_id>eaf8ce70833222100daa76d6feaad3bf</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-07-15 07:36:34</sys_updated_on>
+        <table>sp_widget</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

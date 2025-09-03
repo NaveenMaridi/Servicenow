@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller=function() {
+  /* widget controller */
+  var c = this;
+};]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id/>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>testwidget</name>
+        <option_schema/>
+        <public>true</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-08-28 13:51:39</sys_created_on>
+        <sys_id>bdb48acb83e722100daa76d6feaad341</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>testwidget</sys_name>
+        <sys_package display_value="Custom App" source="x_688732_custom_ap">2f350e63832222100daa76d6feaad3d5</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Custom App">2f350e63832222100daa76d6feaad3d5</sys_scope>
+        <sys_update_name>sp_widget_bdb48acb83e722100daa76d6feaad341</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-08-28 13:51:39</sys_updated_on>
+        <template><![CDATA[<div class="test-widget">
+  <h2 style="color: green;">✅ Hello from Test Embedded Widget!</h2>
+</div>
+]]></template>
+    </sp_widget>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>bdb48acb83e722100daa76d6feaad341</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-08-28 13:51:37</sys_created_on>
+        <sys_id>e5c486cb83e722100daa76d6feaad36f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-08-28 13:51:37</sys_updated_on>
+        <table>sp_widget</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

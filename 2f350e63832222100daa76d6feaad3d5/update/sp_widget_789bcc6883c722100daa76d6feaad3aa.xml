@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller = function($scope, spUtil, $timeout) {
+  var c = this;
+
+  c.isLoading = false;
+  c.userMessage = '';
+  c.showResponseWidget = false;
+  c.responseWidget = null;
+
+  // ]]>🇮🇳<![CDATA[ Indian locations
+  var indiaLocations = [
+    { name: "Mumbai", lat: 19.0760, lng: 72.8777, country: "India" },
+    { name: "Delhi", lat: 28.6139, lng: 77.2090, country: "India" },
+    { name: "Bangalore", lat: 12.9716, lng: 77.5946, country: "India" },
+    { name: "Hyderabad", lat: 17.3850, lng: 78.4867, country: "India" },
+    { name: "Chennai", lat: 13.0827, lng: 80.2707, country: "India" }
+  ];
+
+  // ]]>🌍<![CDATA[ Middle locations (fixed order)
+  var middleLocations = [
+    { name: "Kabul", lat: 34.5553, lng: 69.2075, country: "Afghanistan" },
+    { name: "Kyiv", lat: 50.4501, lng: 30.5234, country: "Ukraine" },
+    { name: "Rome", lat: 41.9028, lng: 12.4964, country: "Italy" },
+    { name: "Berlin", lat: 52.5200, lng: 13.4050, country: "Germany" },
+    { name: "London", lat: 51.5074, lng: -0.1278, country: "United Kingdom" }
+  ];
+
+  // ]]>🇺🇸<![CDATA[ US locations
+  var usLocations = [
+    { name: "New York", lat: 40.7128, lng: -74.0060, country: "USA" },
+    { name: "San Francisco", lat: 37.7749, lng: -122.4194, country: "USA" },
+    { name: "Chicago", lat: 41.8781, lng: -87.6298, country: "USA" },
+    { name: "Houston", lat: 29.7604, lng: -95.3698, country: "USA" },
+    { name: "Los Angeles", lat: 34.0522, lng: -118.2437, country: "USA" },
+    { name: "Dallas", lat: 32.7767, lng: -96.7970, country: "USA" }
+  ];
+
+  // Shuffle utility
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = a[i];
+      a[i] = a[j];
+      a[j] = temp;
+    }
+    return a;
+  }
+
+  // ✅ Extract IPs from traceroute output
+  function extractIPAddresses(traceOutput) {
+    var ipRegex = /\b(?:\d{1,3}\.){3}\d{1,3}\b/g;
+    var matches = traceOutput.match(ipRegex);
+    var uniqueIPs = [];
+
+    if (matches) {
+      for (var i = 0; i < matches.length; i++) {
+        var ip = matches[i];
+        if (uniqueIPs.indexOf(ip) === -1 && ip !== '0.0.0.0') {
+          uniqueIPs.push(ip);
+        }
+      }
+    }
+
+    return uniqueIPs;
+  }
+
+  // ✅ Map IPs to India + Middle (ordered) + US (random)
+  function mapIPsToCustomLocations(ipList) {
+    var totalIPs = ipList.length;
+    if (totalIPs === 0) return [];
+
+    var mapped = [];
+    var ipIndex = 0;
+
+    // Adjusted ratio: ~40% middle
+    var middleCount = Math.min(middleLocations.length, Math.max(1, Math.floor(totalIPs * 0.4)));
+    var remainingIPs = totalIPs - middleCount;
+    var indiaCount = Math.max(1, Math.floor(remainingIPs * 0.5));
+    var usCount = totalIPs - indiaCount - middleCount;
+
+    // Handle small counts
+    if (totalIPs < 3) {
+      indiaCount = 1;
+      middleCount = totalIPs > 1 ? 1 : 0;
+      usCount = totalIPs - indiaCount - middleCount;
+    }
+
+    // ]]>🇮🇳<![CDATA[ Pick India locations randomly
+    var indiaSelected = shuffle(indiaLocations).slice(0, indiaCount);
+    for (var i = 0; i < indiaSelected.length && ipIndex < totalIPs; i++) {
+      mapped.push({
+        name: indiaSelected[i].name,
+        lat: indiaSelected[i].lat,
+        lng: indiaSelected[i].lng,
+        ip: ipList[ipIndex],
+        hostname: indiaSelected[i].country
+      });
+      ipIndex++;
+    }
+
+    // ]]>🌍<![CDATA[ Add middle locations in order (do not shuffle)
+    for (var j = 0; j < middleCount && ipIndex < totalIPs; j++) {
+      var middle = middleLocations[j];
+      mapped.push({
+        name: middle.name,
+        lat: middle.lat,
+        lng: middle.lng,
+        ip: ipList[ipIndex],
+        hostname: middle.country
+      });
+      ipIndex++;
+    }
+
+    // ]]>🇺🇸<![CDATA[ Pick US locations randomly
+    var shuffledUS = shuffle(usLocations);
+    for (var k = 0; k < usCount && ipIndex < totalIPs; k++) {
+      var usLoc = shuffledUS[k % shuffledUS.length];
+      mapped.push({
+        name: usLoc.name,
+        lat: usLoc.lat,
+        lng: usLoc.lng,
+        ip: ipList[ipIndex],
+        hostname: usLoc.country
+      });
+      ipIndex++;
+    }
+
+    return mapped;
+  }
+
+  // ✅ Send traceroute data
+  c.sendMessage = function() {
+    if (!c.userMessage || !c.userMessage.trim()) {
+      alert('Please paste traceroute output first.');
+      return;
+    }
+
+    c.isLoading = true;
+
+    $timeout(function() {
+      var ipList = extractIPAddresses(c.userMessage);
+      if (!ipList.length) {
+        c.isLoading = false;
+        alert('No IP addresses found.');
+        return;
+      }
+
+      var locations = mapIPsToCustomLocations(ipList);
+      if (!locations.length) {
+        c.isLoading = false;
+        return;
+      }
+
+      spUtil.get('cd98ce74837222100daa76d6feaad378', {
+        locations: JSON.stringify(locations)
+      }).then(function(response) {
+        c.responseWidget = response;
+        c.showResponseWidget = true;
+        c.isLoading = false;
+        $scope.$applyAsync();
+      });
+    }, 100);
+  };
+
+  // ✅ Reset UI
+  c.resetInput = function() {
+    c.userMessage = '';
+    c.showResponseWidget = false;
+    c.responseWidget = null;
+  };
+};
+]]></client_script>
+        <controller_as>c</controller_as>
+        <css>body {
+  margin: 0;
+  padding: 40px;
+  background: linear-gradient(to right, #e3eaf6, #f8f9fb);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease;
+}
+
+.container:hover {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+}
+
+textarea {
+  width: 100%;
+  height: 300px;
+  resize: none;
+  font-size: 16px;
+  padding: 15px;
+  box-sizing: border-box;
+  border: 1px solid #d0d7e2;
+  border-radius: 10px;
+  background-color: #f9fbff;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+textarea:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.2);
+  background-color: #ffffff;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  gap: 12px;
+}
+
+button {
+  padding: 12px 26px;
+  font-size: 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #4a90e2, #357ab8);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #357ab8, #2c6cb0);
+  box-shadow: 0 6px 18px rgba(74, 144, 226, 0.4);
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.loader {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.spinner {
+  border: 4px solid #ccc;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+textarea[disabled] {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
+
+button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>true</has_preview>
+        <id>inputfield</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {
+  
+}]]></link>
+        <name>inputfield</name>
+        <option_schema/>
+        <public>true</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-07-26 14:06:27</sys_created_on>
+        <sys_id>789bcc6883c722100daa76d6feaad3aa</sys_id>
+        <sys_mod_count>79</sys_mod_count>
+        <sys_name>inputfield</sys_name>
+        <sys_package display_value="Custom App" source="x_688732_custom_ap">2f350e63832222100daa76d6feaad3d5</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Custom App">2f350e63832222100daa76d6feaad3d5</sys_scope>
+        <sys_update_name>sp_widget_789bcc6883c722100daa76d6feaad3aa</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-09-03 14:59:07</sys_updated_on>
+        <template><![CDATA[<div class="main-wrapper">
+  <textarea id="userInput"
+            ng-model="c.userMessage"
+            placeholder="Start typing something..."
+            ng-disabled="c.isLoading">
+  </textarea>
+
+  <div class="button-row">
+    <button ng-click="c.sendMessage()" ng-disabled="c.isLoading">Send</button>
+    <button ng-click="c.resetInput()">Clear</button>
+  </div>
+
+  <div class="loader" ng-show="c.isLoading">
+    <div class="spinner"></div>
+    <p>Processing...</p>
+  </div>
+
+  <!-- Second widget appears below everything -->
+  <div class="response-widget" ng-if="c.showResponseWidget">
+    <sp-widget widget="::c.responseWidget"></sp-widget>
+  </div>
+</div>
+]]></template>
+    </sp_widget>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>789bcc6883c722100daa76d6feaad3aa</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-07-26 14:06:26</sys_created_on>
+        <sys_id>e8bb00ec83c722100daa76d6feaad345</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-07-26 14:06:26</sys_updated_on>
+        <table>sp_widget</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

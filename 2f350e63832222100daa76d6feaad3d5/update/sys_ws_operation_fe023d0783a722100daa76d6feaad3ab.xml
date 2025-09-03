@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <http_method>POST</http_method>
+        <name>Get Location</name>
+        <operation_script><![CDATA[(function process(request, response) {
+
+    var body = request.body.data;
+
+    gs.info('Raw req body.body =' + body);
+
+    // Parse if request.body is a string
+    if (typeof body === "string") {
+        try {
+            body = JSON.parse(body);
+        } catch (e) {
+            response.setBody({
+                result: {
+                    error: "Invalid JSON in request body"
+                }
+            });
+            return;
+        }
+    }
+
+    // Validate payload
+    if (!body || !body.data || !Array.isArray(body.data)) {
+        response.setBody({
+            result: {
+                error: "Request must contain 'data' array with city and ipaddress"
+            }
+        });
+        return;
+    }
+
+    var resultArr = [];
+    var API_KEY = "AIzaSyB7AKyZsb-AXzCA7TBPgu6PoRI1oaAniS4"; // ]]>🔑<![CDATA[ Google API key
+
+    body.data.forEach(function(item) {
+        var city = item.city || "";
+        var ip = item.ipaddress || "";
+
+        var lat = 0.0;
+        var lng = 0.0;
+
+        try {
+            if (city) {
+
+
+                // Call Google Geocoding API
+                var r = new sn_ws.RESTMessageV2();
+                r.setHttpMethod("POST");
+                r.setEndpoint("https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURIComponent(city) + "&key=" + API_KEY);
+
+                var res = r.execute();
+                var resBody = JSON.parse(res.getBody());
+
+                if (resBody.results && resBody.results.length > 0) {
+                    lat = resBody.results[0].geometry.location.lat;
+                    lng = resBody.results[0].geometry.location.lng;
+                }
+
+            }
+        } catch (ex) {
+            // Capture any error but still return city + ip
+            gs.error("Error fetching location for " + city + ": " + ex.message);
+        }
+
+        resultArr.push({
+            city: city,
+            ipaddress: ip,
+            latitude: lat,
+            longitude: lng
+        });
+    });
+
+    response.setBody({
+        result: resultArr
+    });
+
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_688732_custom_ap/location_api/location</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/location</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-08-28 12:30:37</sys_created_on>
+        <sys_id>fe023d0783a722100daa76d6feaad3ab</sys_id>
+        <sys_mod_count>13</sys_mod_count>
+        <sys_name>Get Location</sys_name>
+        <sys_package display_value="Custom App" source="x_688732_custom_ap">2f350e63832222100daa76d6feaad3d5</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Custom App">2f350e63832222100daa76d6feaad3d5</sys_scope>
+        <sys_update_name>sys_ws_operation_fe023d0783a722100daa76d6feaad3ab</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-08-28 15:03:21</sys_updated_on>
+        <web_service_definition display_value="Location API">15e1b5c383a722100daa76d6feaad3cc</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>fe023d0783a722100daa76d6feaad3ab</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-08-28 12:30:35</sys_created_on>
+        <sys_id>ee323d0783a722100daa76d6feaad3d9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-08-28 12:30:35</sys_updated_on>
+        <table>sys_ws_operation</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

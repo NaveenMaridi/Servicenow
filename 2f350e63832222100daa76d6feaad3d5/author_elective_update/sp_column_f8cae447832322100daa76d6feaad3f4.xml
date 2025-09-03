@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_column">
+    <sp_column action="DELETE">
+        <class_name/>
+        <order>2</order>
+        <semantic_tag/>
+        <size>1</size>
+        <size_lg/>
+        <size_sm/>
+        <size_xs/>
+        <sp_row display_value="1">6daaa807832322100daa76d6feaad33b</sp_row>
+        <sys_class_name>sp_column</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-08-28 07:18:21</sys_created_on>
+        <sys_id>f8cae447832322100daa76d6feaad3f4</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>2</sys_name>
+        <sys_package display_value="Custom App" source="x_688732_custom_ap">2f350e63832222100daa76d6feaad3d5</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Custom App">2f350e63832222100daa76d6feaad3d5</sys_scope>
+        <sys_update_name>sp_column_f8cae447832322100daa76d6feaad3f4</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-08-28 07:18:21</sys_updated_on>
+    </sp_column>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Custom App">2f350e63832222100daa76d6feaad3d5</application>
+        <file_path/>
+        <instance_id>303c7731db5e865002022a5913961918</instance_id>
+        <instance_name>dev272438</instance_name>
+        <name>sp_column_f8cae447832322100daa76d6feaad3f4</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_column"><sp_column action="INSERT_OR_UPDATE"><class_name/><order>2</order><semantic_tag/><size>1</size><size_lg/><size_sm/><size_xs/><sp_row display_value="1">6daaa807832322100daa76d6feaad33b</sp_row><sys_class_name>sp_column</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-08-28 07:18:21</sys_created_on><sys_id>f8cae447832322100daa76d6feaad3f4</sys_id><sys_mod_count>0</sys_mod_count><sys_name>2</sys_name><sys_package display_value="Custom App" source="x_688732_custom_ap">2f350e63832222100daa76d6feaad3d5</sys_package><sys_policy/><sys_scope display_value="Custom App">2f350e63832222100daa76d6feaad3d5</sys_scope><sys_update_name>sp_column_f8cae447832322100daa76d6feaad3f4</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-08-28 07:18:21</sys_updated_on></sp_column></record_update>]]></payload>
+        <payload_hash>-1376447830</payload_hash>
+        <record_name>2</record_name>
+        <reverted_from/>
+        <source>67350e63832222100daa76d6feaad3da</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-08-28 07:18:21</sys_created_on>
+        <sys_id>f8cae447832322100daa76d6feaad3f6</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>198ef8ab4210000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-08-28 07:18:21</sys_updated_on>
+        <type>Column</type>
+        <update_guid>fccae447402322109cf05c32350e60f5</update_guid>
+        <update_guid_history>fccae447402322109cf05c32350e60f5:-1376447830</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="2">eacae807832322100daa76d6feaad3ef</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-08-28 07:18:28</sys_created_on>
+        <sys_db_object display_value="" name="sp_column">sp_column</sys_db_object>
+        <sys_id>8d461c71f2854afcaa64443cde3b89d1</sys_id>
+        <sys_metadata>f8cae447832322100daa76d6feaad3f4</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>2</sys_name>
+        <sys_package display_value="Custom App" source="x_688732_custom_ap">2f350e63832222100daa76d6feaad3d5</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Custom App">2f350e63832222100daa76d6feaad3d5</sys_scope>
+        <sys_scope_delete display_value="">124dcbff2d7e453985089e71cbfbd9a1</sys_scope_delete>
+        <sys_update_name>sp_column_f8cae447832322100daa76d6feaad3f4</sys_update_name>
+        <sys_update_version display_value="sp_column_f8cae447832322100daa76d6feaad3f4">f8cae447832322100daa76d6feaad3f6</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-08-28 07:18:28</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

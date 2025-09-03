@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="2df68a6b836222100daa76d6feaad3f7" label="Assignment Router" max_length="40" name="x_688732_custom_ap_assignment_router" type="collection">
+        <element dependent="table" dependent_on_field="table" label="Conditons" max_length="4000" name="conditons" type="conditions" use_dependent_field="true"/>
+        <element choice="1" label="Table" max_length="80" name="table" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Task" sequence="100" value="task"/>
+                <element inactive_on_update="false" label="RITM" sequence="200" value="sc_req_item"/>
+            </choice>
+        </element>
+    </element>
+</database>

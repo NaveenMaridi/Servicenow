@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_formatter">
+    <sys_ui_formatter action="DELETE">
+        <active>true</active>
+        <angular_module/>
+        <formatter>attached_payload</formatter>
+        <name>attached payload</name>
+        <seismic_component/>
+        <sys_class_name>sys_ui_formatter</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-07-11 15:58:23</sys_created_on>
+        <sys_id>b2459f63832622100daa76d6feaad3ff</sys_id>
+        <sys_mod_count>8</sys_mod_count>
+        <sys_name>attached payload</sys_name>
+        <sys_package display_value="Custom App" source="x_688732_custom_ap">2f350e63832222100daa76d6feaad3d5</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Custom App">2f350e63832222100daa76d6feaad3d5</sys_scope>
+        <sys_update_name>sys_ui_formatter_b2459f63832622100daa76d6feaad3ff</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-07-11 16:18:20</sys_updated_on>
+        <table>incident</table>
+        <type>formatter</type>
+    </sys_ui_formatter>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Custom App">2f350e63832222100daa76d6feaad3d5</application>
+        <file_path/>
+        <instance_id>303c7731db5e865002022a5913961918</instance_id>
+        <instance_name>dev272438</instance_name>
+        <name>sys_ui_formatter_b2459f63832622100daa76d6feaad3ff</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_formatter"><sys_ui_formatter action="INSERT_OR_UPDATE"><active>true</active><angular_module/><formatter>attached_payload</formatter><name>attached payload</name><seismic_component/><sys_class_name>sys_ui_formatter</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-07-11 15:58:23</sys_created_on><sys_id>b2459f63832622100daa76d6feaad3ff</sys_id><sys_mod_count>8</sys_mod_count><sys_name>attached payload</sys_name><sys_package display_value="Custom App" source="x_688732_custom_ap">2f350e63832222100daa76d6feaad3d5</sys_package><sys_policy/><sys_scope display_value="Custom App">2f350e63832222100daa76d6feaad3d5</sys_scope><sys_update_name>sys_ui_formatter_b2459f63832622100daa76d6feaad3ff</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-07-11 16:18:20</sys_updated_on><table>incident</table><type>formatter</type></sys_ui_formatter></record_update>]]></payload>
+        <payload_hash>-992497655</payload_hash>
+        <record_name>attached payload</record_name>
+        <reverted_from/>
+        <source>67350e63832222100daa76d6feaad3da</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-07-11 16:18:20</sys_created_on>
+        <sys_id>b20ad723832a22100daa76d6feaad32c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>197fa47d3b60000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-07-11 16:18:20</sys_updated_on>
+        <type>UI Formatter</type>
+        <update_guid>a60ad723752a221091c83bba64c7d72b</update_guid>
+        <update_guid_history>a60ad723752a221091c83bba64c7d72b:-992497655,842853ef7de62210e44f525a639e2975:753878667,afa7dfaf21e62210d2a998fb814b0ee5:2010352949,56f69b6fe1e62210ea7b0910d68cc0a0:-6958674,9ad69b2f83e622103c4512467bca1f2c:56593487,ff461b2f4ee62210a5d63896816fa21f:1635194317,9ef59feb4ae62210e1ca5ac044f324c8:1772806831,81a5572f44e62210c9f801cfc3f0ddab:-1542186388,a275932ff0e6221008fdbf71f6806637:667888668</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-07-11 16:24:17</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_formatter">sys_ui_formatter</sys_db_object>
+        <sys_id>60a6ac18294942e294aa15b6d2b130a4</sys_id>
+        <sys_metadata>b2459f63832622100daa76d6feaad3ff</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>attached payload</sys_name>
+        <sys_package display_value="Custom App" source="x_688732_custom_ap">2f350e63832222100daa76d6feaad3d5</sys_package>
+        <sys_parent display_value="Incident">bc0a351c198312104f3423cebaaa853d</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Custom App">2f350e63832222100daa76d6feaad3d5</sys_scope>
+        <sys_scope_delete display_value="">124dcbff2d7e453985089e71cbfbd9a1</sys_scope_delete>
+        <sys_update_name>sys_ui_formatter_b2459f63832622100daa76d6feaad3ff</sys_update_name>
+        <sys_update_version display_value="sys_ui_formatter_b2459f63832622100daa76d6feaad3ff">b20ad723832a22100daa76d6feaad32c</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-07-11 16:24:17</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

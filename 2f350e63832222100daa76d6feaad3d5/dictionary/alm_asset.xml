@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element attributes="all_tables.text_index_translations=true,kagami_csindex_enabled=true" audit="true" db_object_id="ddc9f1d8198312104f3423cebaaa8503" label="Asset" max_length="40" name="alm_asset" text_index="true" type="collection">
+        <element attributes="encode_utf8=false,readonly_clickthrough=true" label="Install Base" max_length="32" name="install_base" read_only="true" reference="sn_install_base_item" type="reference"/>
+        <element attributes="no_audit=true" hint="Hidden flag used to prevent loops when synchronizing data between an asset and associated install base" label="Skip sync to ib" max_length="40" name="skip_sync_to_ib" read_only="true" type="boolean"/>
+        <index name="index">
+            <element name="install_base"/>
+        </index>
+    </element>
+</database>

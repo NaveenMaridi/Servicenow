@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_ui_action">
+    <sys_ui_action action="INSERT_OR_UPDATE">
+        <action_name/>
+        <active>true</active>
+        <client>true</client>
+        <client_script_v2><![CDATA[function onClick(g_form) {
+
+}]]></client_script_v2>
+        <comments/>
+        <condition/>
+        <form_action>false</form_action>
+        <form_button>false</form_button>
+        <form_button_v2>false</form_button_v2>
+        <form_context_menu>false</form_context_menu>
+        <form_link>false</form_link>
+        <form_menu_button_v2>false</form_menu_button_v2>
+        <form_style/>
+        <format_for_configurable_workspace>false</format_for_configurable_workspace>
+        <hint/>
+        <isolate_script>true</isolate_script>
+        <list_action>false</list_action>
+        <list_banner_button>false</list_banner_button>
+        <list_button>false</list_button>
+        <list_choice>false</list_choice>
+        <list_context_menu>false</list_context_menu>
+        <list_link>false</list_link>
+        <list_save_with_form_button>false</list_save_with_form_button>
+        <list_style/>
+        <messages/>
+        <name>catalog</name>
+        <onclick>createNewTasksClient()</onclick>
+        <order>100</order>
+        <script><![CDATA[function createNewTasksClient() {
+  if (confirm("Do you want to create Tasks on open RITM?")) {
+    gsftSubmit(null, g_form.getFormElement(), 'createNewSCTasks');
+  } else {
+    alert("No Tasks have been created.");
+  }
+}
+
+
+if (typeof window == 'undefined') {
+  myServerSideFunction();
+}
+
+
+function myServerSideFunction() {
+  var RITMSkipConditions = '3,4,7';
+  var infoMsg = 'Create SC Task on RITMs\n';
+
+
+  infoMsg += 'Checking for RITM for Catalog Item: ' + current.catalog_item.name + ' and not in a Closed State\n';
+  // Find Open RITM for this Catalog Item.
+  var grRITM = new GlideRecord('sc_req_item');
+  grRITM.addEncodedQuery('cat_item=' + current.catalog_item + '^stateNOT IN' + RITMSkipConditions);
+  grRITM.query();
+  while (grRITM.next()) {
+    var bool = false;
+    bool = GlideFilter.checkRecord(grRITM, current.conditions, true);
+    infoMsg += 'Record: ' + grRITM.number + ' is ' + bool + ' on ' + current.name + '\n';
+
+
+    if (bool) {
+      // This RITM should have the identified task.
+      var template_values = parseTemplateValues(current.task_template_value);
+      var taskSysId = findCreateTask(grRITM.sys_id, template_values.taskName, template_values.taskList);
+      if (current.task_variables != null && current.task_variables != '' && current.task_variables != 'undefined')
+        findCreateTaskVariables(grRITM.sys_id, taskSysId, current.task_variables, template_values.variableList);
+    }
+  }
+
+
+  gs.info(infoMsg);
+
+
+  function findCreateTask(ritm, taskName, template_value) {
+    var task_sys_id;
+
+
+    var grft = new GlideRecord('sc_task');
+    grft.addEncodedQuery('request_item=' + ritm + '^' + taskName);
+    grft.query();
+    if (grft.next()) {
+      infoMsg += '\tFound task ' + grft.number + ' named: ' + taskName + '\n';
+      task_sys_id = grft.sys_id;
+    } else {
+      var gt = new GlideRecord('sc_task');
+      gt.initialize();
+      gt.request_item = ritm;
+      //gt.sys_domain = gs.getProperty('x_att2_mpc.MPC_DOMAIN');
+
+
+      for (i = 0; i < template_value.length; i++) {
+        var tmpVarSet = template_value[i];
+        gt.setValue(tmpVarSet.name, tmpVarSet.value);
+      }
+      task_sys_id = gt.insert();
+      infoMsg += '\tCreated task ' + gt.number + ' named: ' + taskName + '\n';
+    }
+
+
+    return task_sys_id;
+  }
+
+
+  function parseTemplateValues(template_values) {
+    var tmpList = template_values.split('^');
+    var taskName = 'Unnamed Task';
+    var taskList = [];
+    var variableList = [];
+
+
+    for (var i = 0; i < tmpList.length; i++) {
+      gs.info('Item: ' + tmpList[i]);
+      if (tmpList[i].indexOf('short_description') >= 0) {
+        taskName = tmpList[i];
+      }
+      var obj = {};
+      if (tmpList[i] != 'EQ') {
+        var tmpVarSet = tmpList[i].split('=');
+        var result = tmpList[i].indexOf('variablesHASITEMVARIABLE:');
+        gs.info('Result: ' + result);
+        if (result >= 0) {
+          //gt.setValue(tmpVarSet[0], tmpVarSet[1]);
+          gs.info('Variable setValue: ' + tmpVarSet[0].split(':')[1] + ', ' + tmpVarSet[1]);
+          obj.name = tmpVarSet[0].split(':')[1];
+          obj.value = tmpVarSet[1];
+          variableList.push(obj);
+        } else {
+          obj.name = tmpVarSet[0];
+          obj.value = tmpVarSet[1];
+          taskList.push(obj);
+          gs.info('setValue: ' + tmpVarSet[0] + ', ' + tmpVarSet[1]);
+        }
+      }
+    }
+    var retObj = {};
+    retObj.taskName = taskName;
+    retObj.taskList = taskList;
+    retObj.variableList = variableList;
+
+
+    return retObj;
+  }
+
+
+  function findCreateTaskVariables(ritm_sys_id, task_sys_id, task_variables, template_value) {
+    // infoMsg += 'createTaskVariables: ' + ritm_sys_id + ', ' + task_sys_id + ', ' + task_variables + '\n';
+    // infoMsg += 'Looking up request_item: ' + ritm_sys_id + '\n';
+
+
+    var variablesList = [];
+    variablesList = task_variables.split(',');
+    var reqvar = new GlideRecord('sc_item_option_mtom');
+    //reqvar.addQuery('request_item',current.sys_id);
+    reqvar.addQuery('request_item', ritm_sys_id);
+    reqvar.query();
+
+
+    while (reqvar.next()) {
+      //infoMsg += '\tFound\n';
+      //infoMsg += '\tLooking up sc_item_option: ' + reqvar.sc_item_option + '\n';
+      var variablereference = new GlideRecord('sc_item_option');
+      if (variablereference.get(reqvar.sc_item_option)) {
+        //infoMsg += '\t\tFound\n';
+
+
+        var myIndex = variablesList.indexOf(variablereference.item_option_new.toString());
+        //infoMsg += '\t\tIs it in our index? ' + variablereference.item_option_new + ' (' + myIndex + ')\n';
+        if (myIndex > -1 || variablereference.item_option_new == variablesList) {
+          //infoMsg += '\t\tLinking task varaible.\n';
+          createTaskVariable(task_sys_id, variablereference.item_option_new);
+        }
+      }
+    }
+
+
+    // Now that the template variables have been created, we can set them.
+    var grTask = new GlideRecord('sc_task');
+    if (grTask.get(task_sys_id)) {
+      for (i = 0; i < template_value.length; i++) {
+        var tmpVarSet = template_value[i];
+        grTask.setValue(tmpVarSet[name], tmpVarSet[value]);
+      }
+      grTask.update();
+    }
+  }
+
+
+  function createTaskVariable(task, variable) {
+    //infoMsg += 'Create Task Variable encoded Query: ' + 'task=' + task + '^variable=' + variable + '\n';
+    var grTV = new GlideRecord('sc_item_variables_task');
+    grTV.addEncodedQuery('task=' + task + '^variable=' + variable);
+    grTV.query();
+    if (grTV.next()) {
+      infoMsg += '\t\tVariable already exists\n';
+    } else {
+      infoMsg += '\t\tCreating variable\n';
+      var add_task_var = new GlideRecord('sc_item_variables_task');
+      add_task_var.task = task;
+      add_task_var.variable = variable;
+      add_task_var.insert();
+    }
+  }
+action.setRedirectURL(current);
+}]]></script>
+        <show_insert>true</show_insert>
+        <show_multiple_update>false</show_multiple_update>
+        <show_query>false</show_query>
+        <show_update>true</show_update>
+        <sys_class_name>sys_ui_action</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-07-15 14:33:09</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>5ee7af7c833a22100daa76d6feaad320</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>catalog</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Custom App" source="x_688732_custom_ap">2f350e63832222100daa76d6feaad3d5</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Custom App">2f350e63832222100daa76d6feaad3d5</sys_scope>
+        <sys_update_name>sys_ui_action_5ee7af7c833a22100daa76d6feaad320</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-07-15 14:33:09</sys_updated_on>
+        <table/>
+        <ui11_compatible>true</ui11_compatible>
+        <ui16_compatible>false</ui16_compatible>
+    </sys_ui_action>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>5ee7af7c833a22100daa76d6feaad320</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-07-15 14:33:07</sys_created_on>
+        <sys_id>e858a73c833a22100daa76d6feaad34f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-07-15 14:33:07</sys_updated_on>
+        <table>sys_ui_action</table>
+        <use_es_latest>false</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

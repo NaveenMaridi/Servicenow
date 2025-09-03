@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="2aa1388f832322100daa76d6feaad3fc" label="Network Path" max_length="40" name="x_688732_custom_ap_network_path" type="collection">
+        <element default="javascript:getNextObjNumberPadded();" dynamic_default_value="fdcb83a85f220100a9ad2572f2b4773c" label="Number" max_length="40" name="number" type="string" use_dynamic_default="true"/>
+        <element label="IP Address" max_length="200" name="ip_address" type="ip_address"/>
+        <element label="Trace - Output" max_length="2500" name="trace_output" type="string"/>
+    </element>
+</database>

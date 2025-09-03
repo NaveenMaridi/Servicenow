@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_688732_custom_ap_network_path</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>IP address </name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/ ) {
+    var traceOutput = current.trace_output.toString();
+    // gs.info('==== Raw trace output ===\n' + traceOutput);
+    // Regex to extract IPv4 addresses
+    var ipRegex = /\b\d{1,3}(?:\.\d{1,3}){3}\b/g;
+    var matches = traceOutput.match(ipRegex);
+    //gs.info('=== Regex matches===' + JSON.stringify(matches));
+    if (matches && matches.length > 0) {
+        var uniqueIPs = [];
+        var seen = {};
+        for (var i = 0; i < matches.length; i++) {
+            var ip = matches[i];
+            if (!seen[ip]) {
+                seen[ip] = true;
+                uniqueIPs.push(ip);
+            }
+        }
+        //gs.info('===unique ips ===' + JSON.stringify(uniqueIPs));
+        // Store as JSON list (or just comma separated string)
+        current.ip_address = JSON.stringify(uniqueIPs, null, 2);
+
+    }
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-08-28 12:48:30</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>efada58b836722100daa76d6feaad3ae</sys_id>
+        <sys_mod_count>22</sys_mod_count>
+        <sys_name>IP address </sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Custom App" source="x_688732_custom_ap">2f350e63832222100daa76d6feaad3d5</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Custom App">2f350e63832222100daa76d6feaad3d5</sys_scope>
+        <sys_update_name>sys_script_efada58b836722100daa76d6feaad3ae</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-09-01 07:21:02</sys_updated_on>
+        <template/>
+        <when>before</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=efada58b836722100daa76d6feaad3ae"/>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>efada58b836722100daa76d6feaad3ae</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-08-28 12:48:29</sys_created_on>
+        <sys_id>345639c783a722100daa76d6feaad375</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-08-28 12:48:29</sys_updated_on>
+        <table>sys_script</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

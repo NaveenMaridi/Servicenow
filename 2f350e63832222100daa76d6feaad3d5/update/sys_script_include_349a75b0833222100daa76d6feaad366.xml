@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_688732_custom_ap.Maputilies</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <mobile_callable>false</mobile_callable>
+        <name>Maputilies</name>
+        <sandbox_callable>false</sandbox_callable>
+        <script><![CDATA[function SequentialLocationMap($scope, $element, $timeout, spUtil) {
+    /* widget controller */
+    var c = this;
+
+    // Define your locations (you might get this from the server script)
+    c.locations = [
+        { name: "Mumbai", lat: 19.0760, lng: 72.8777 },
+        { name: "Chennai", lat: 13.0827, lng: 80.2707 },
+        { name: "Delhi", lat: 28.7041, lng: 77.1025 },
+        { name: "Hyderabad", lat: 17.3850, lng: 78.4867 }
+    ];
+
+    // Get your Google Maps API Key (assuming it's available in a system property or data.apiKey)
+    // For simplicity, let's assume you've configured it in a system property
+    // You might fetch it from the server script if it's not a global client-side property.
+    // For this example, let's hardcode it for demonstration (not recommended for production)
+    var googleApiKey = "AIzaSyB7AKyZsb-AXzCA7TBPgu6PoRI1oaAniS4"; // Replace with your actual key
+
+    // Load Google Maps API script dynamically
+    function loadGoogleMapsAPI() {
+        if (typeof google === 'object' && typeof google.maps === 'object') {
+            initMap();
+            return;
+        }
+
+        var script = document.createElement('script');
+        script.src = "https://maps.googleapis.com/maps/api/js?key=" + googleApiKey + "&callback=initMap";
+        script.async = true;
+        script.defer = true;
+        document.head.appendChild(script);
+    }
+
+    // This function will be called by the Google Maps API once it's loaded
+    // Make it globally accessible or attach to window for the callback to work
+    window.initMap = function() {
+        const mapElement = $element.find('#sequentialMap')[0];
+        if (!mapElement) {
+            console.error("Map element not found!");
+            return;
+        }
+
+        const map = new google.maps.Map(mapElement, {
+            zoom: 5,
+            center: { lat: 20.5937, lng: 78.9629 }, // Center roughly over India
+        });
+
+        const pathCoordinates = [];
+
+        c.locations.forEach((location, index) => {
+            const latLng = new google.maps.LatLng(location.lat, location.lng);
+            pathCoordinates.push(latLng);
+
+            new google.maps.Marker({
+                position: latLng,
+                map: map,
+                title: location.name,
+                label: (index + 1).toString()
+            });
+        });
+
+        const flightPath = new google.maps.Polyline({
+            path: pathCoordinates,
+            geodesic: true,
+            strokeColor: "#FF0000",
+            strokeOpacity: 0.8,
+            strokeWeight: 4,
+        });
+
+        flightPath.setMap(map);
+
+        const bounds = new google.maps.LatLngBounds();
+        pathCoordinates.forEach(coord => {
+            bounds.extend(coord);
+        });
+        map.fitBounds(bounds);
+    };
+
+    // Load the map API when the widget loads
+    $timeout(loadGoogleMapsAPI); // Use $timeout to ensure DOM is ready
+}]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-07-15 06:34:40</sys_created_on>
+        <sys_id>349a75b0833222100daa76d6feaad366</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Maputilies</sys_name>
+        <sys_package display_value="Custom App" source="x_688732_custom_ap">2f350e63832222100daa76d6feaad3d5</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Custom App">2f350e63832222100daa76d6feaad3d5</sys_scope>
+        <sys_update_name>sys_script_include_349a75b0833222100daa76d6feaad366</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-07-15 07:09:58</sys_updated_on>
+    </sys_script_include>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>349a75b0833222100daa76d6feaad366</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-07-15 06:34:39</sys_created_on>
+        <sys_id>73cafd70833222100daa76d6feaad3eb</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-07-15 06:34:39</sys_updated_on>
+        <table>sys_script_include</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>
