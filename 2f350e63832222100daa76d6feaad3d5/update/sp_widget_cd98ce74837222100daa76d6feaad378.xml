@@ -10,8 +10,9 @@
   c.markers = [];
   c.polyline = null;
 
-  var googleApiKey = "AIzaSyB7AKyZsb-AXzCA7TBPgu6PoRI1oaAniS4"; // Your API key here
-
+  //var googleApiKey = "AIzaSyB7AKyZsb-AXzCA7TBPgu6PoRI1oaAniS4"; // Your API key here
+	var googleApiKey = $scope.data.apiKey;
+	
   function loadGoogleMapsAPI(callback) {
     if (typeof google === 'object' && typeof google.maps === 'object') {
       console.log("Google Maps API already loaded");
@@ -249,6 +250,8 @@
         <public>true</public>
         <roles/>
         <script><![CDATA[(function() {
+	var apiKey = gs.getProperty('x_688732_custom_ap.Google Map API key');
+	data.apiKey = apiKey;
   data.locations = [];
   if (input && input.locations) {
     try {
@@ -264,14 +267,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2025-07-15 07:36:40</sys_created_on>
         <sys_id>cd98ce74837222100daa76d6feaad378</sys_id>
-        <sys_mod_count>46</sys_mod_count>
+        <sys_mod_count>47</sys_mod_count>
         <sys_name>maps API</sys_name>
         <sys_package display_value="Custom App" source="x_688732_custom_ap">2f350e63832222100daa76d6feaad3d5</sys_package>
         <sys_policy/>
         <sys_scope display_value="Custom App">2f350e63832222100daa76d6feaad3d5</sys_scope>
         <sys_update_name>sp_widget_cd98ce74837222100daa76d6feaad378</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2025-09-03 15:14:07</sys_updated_on>
+        <sys_updated_on>2025-09-04 10:18:37</sys_updated_on>
         <template><![CDATA[<!-- Loader shown until map is ready -->
 <div ng-if="!c.mapLoaded" class="map-loader">
   Loading map, please wait...
