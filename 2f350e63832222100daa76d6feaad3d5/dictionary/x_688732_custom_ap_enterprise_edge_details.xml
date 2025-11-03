@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="8cb35ea783307210c5aac900feaad365" label="Enterprise Edge Details" max_length="40" name="x_688732_custom_ap_enterprise_edge_details" type="collection">
+        <element label="IPs Lat Lon &amp; Host" max_length="4000" name="ips_lat_lon_host" type="json"/>
+        <element label="Edge Id" max_length="40" name="edge_id" type="integer"/>
+        <element label="Enterprise Id" max_length="40" name="enterprise_id" type="integer"/>
+        <element label="Edge Payload" max_length="4000" name="edge_payload" type="json"/>
+    </element>
+</database>

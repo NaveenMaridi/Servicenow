@@ -9,129 +9,47 @@
   c.showResponseWidget = false;
   c.responseWidget = null;
 
-  // ]]>🇮🇳<![CDATA[ Indian locations
-  var indiaLocations = [
-    { name: "Mumbai", lat: 19.0760, lng: 72.8777, country: "India" },
-    { name: "Delhi", lat: 28.6139, lng: 77.2090, country: "India" },
-    { name: "Bangalore", lat: 12.9716, lng: 77.5946, country: "India" },
-    { name: "Hyderabad", lat: 17.3850, lng: 78.4867, country: "India" },
-    { name: "Chennai", lat: 13.0827, lng: 80.2707, country: "India" }
-  ];
-
-  // ]]>🌍<![CDATA[ Middle locations (fixed order)
-  var middleLocations = [
-    { name: "Kabul", lat: 34.5553, lng: 69.2075, country: "Afghanistan" },
-    { name: "Kyiv", lat: 50.4501, lng: 30.5234, country: "Ukraine" },
-    { name: "Rome", lat: 41.9028, lng: 12.4964, country: "Italy" },
-    { name: "Berlin", lat: 52.5200, lng: 13.4050, country: "Germany" },
-    { name: "London", lat: 51.5074, lng: -0.1278, country: "United Kingdom" }
-  ];
-
-  // ]]>🇺🇸<![CDATA[ US locations
-  var usLocations = [
-    { name: "New York", lat: 40.7128, lng: -74.0060, country: "USA" },
-    { name: "San Francisco", lat: 37.7749, lng: -122.4194, country: "USA" },
-    { name: "Chicago", lat: 41.8781, lng: -87.6298, country: "USA" },
-    { name: "Houston", lat: 29.7604, lng: -95.3698, country: "USA" },
-    { name: "Los Angeles", lat: 34.0522, lng: -118.2437, country: "USA" },
-    { name: "Dallas", lat: 32.7767, lng: -96.7970, country: "USA" }
-  ];
-
-  // Shuffle utility
-  function shuffle(arr) {
-    var a = arr.slice();
-    for (var i = a.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var temp = a[i];
-      a[i] = a[j];
-      a[j] = temp;
-    }
-    return a;
-  }
-
-  // ✅ Extract IPs from traceroute output
+  // ✅ Extract IPs from traceroute output (only from numbered lines)
   function extractIPAddresses(traceOutput) {
-    var ipRegex = /\b(?:\d{1,3}\.){3}\d{1,3}\b/g;
-    var matches = traceOutput.match(ipRegex);
-    var uniqueIPs = [];
+    var lines = traceOutput.split('\n');
+    var ipRegex = /\b(?:\d{1,3}\.){3}\d{1,3}\b/;
+    var ipList = [];
 
-    if (matches) {
-      for (var i = 0; i < matches.length; i++) {
-        var ip = matches[i];
-        if (uniqueIPs.indexOf(ip) === -1 && ip !== '0.0.0.0') {
-          uniqueIPs.push(ip);
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].trim();
+      if (/^\d+\s/.test(line)) { // Line starts with hop number
+        var match = line.match(ipRegex);
+        if (match && match[0] !== '0.0.0.0') {
+          ipList.push(match[0]);
         }
       }
     }
 
-    return uniqueIPs;
+    return ipList;
   }
 
-  // ✅ Map IPs to India + Middle (ordered) + US (random)
-  function mapIPsToCustomLocations(ipList) {
-    var totalIPs = ipList.length;
-    if (totalIPs === 0) return [];
+  // ✅ Match extracted IPs with location data
+  function filterLocationsByIPs(ipList, allLocations) {
+    if (!Array.isArray(allLocations)) return [];
 
-    var mapped = [];
-    var ipIndex = 0;
+    var matched = [];
 
-    // Adjusted ratio: ~40% middle
-    var middleCount = Math.min(middleLocations.length, Math.max(1, Math.floor(totalIPs * 0.4)));
-    var remainingIPs = totalIPs - middleCount;
-    var indiaCount = Math.max(1, Math.floor(remainingIPs * 0.5));
-    var usCount = totalIPs - indiaCount - middleCount;
+    for (var i = 0; i < ipList.length; i++) {
+      var ip = ipList[i].trim();
 
-    // Handle small counts
-    if (totalIPs < 3) {
-      indiaCount = 1;
-      middleCount = totalIPs > 1 ? 1 : 0;
-      usCount = totalIPs - indiaCount - middleCount;
+      for (var j = 0; j < allLocations.length; j++) {
+        var locIP = allLocations[j].ip ? allLocations[j].ip.trim() : '';
+        if (ip === locIP) {
+          matched.push(allLocations[j]);
+          break;
+        }
+      }
     }
 
-    // ]]>🇮🇳<![CDATA[ Pick India locations randomly
-    var indiaSelected = shuffle(indiaLocations).slice(0, indiaCount);
-    for (var i = 0; i < indiaSelected.length && ipIndex < totalIPs; i++) {
-      mapped.push({
-        name: indiaSelected[i].name,
-        lat: indiaSelected[i].lat,
-        lng: indiaSelected[i].lng,
-        ip: ipList[ipIndex],
-        hostname: indiaSelected[i].country
-      });
-      ipIndex++;
-    }
-
-    // ]]>🌍<![CDATA[ Add middle locations in order (do not shuffle)
-    for (var j = 0; j < middleCount && ipIndex < totalIPs; j++) {
-      var middle = middleLocations[j];
-      mapped.push({
-        name: middle.name,
-        lat: middle.lat,
-        lng: middle.lng,
-        ip: ipList[ipIndex],
-        hostname: middle.country
-      });
-      ipIndex++;
-    }
-
-    // ]]>🇺🇸<![CDATA[ Pick US locations randomly
-    var shuffledUS = shuffle(usLocations);
-    for (var k = 0; k < usCount && ipIndex < totalIPs; k++) {
-      var usLoc = shuffledUS[k % shuffledUS.length];
-      mapped.push({
-        name: usLoc.name,
-        lat: usLoc.lat,
-        lng: usLoc.lng,
-        ip: ipList[ipIndex],
-        hostname: usLoc.country
-      });
-      ipIndex++;
-    }
-
-    return mapped;
+    return matched;
   }
 
-  // ✅ Send traceroute data
+  // ✅ Trigger visualization
   c.sendMessage = function() {
     if (!c.userMessage || !c.userMessage.trim()) {
       alert('Please paste traceroute output first.');
@@ -148,16 +66,25 @@
         return;
       }
 
-      var locations = mapIPsToCustomLocations(ipList);
-      if (!locations.length) {
+      if (!c.data || !Array.isArray(c.data.locations)) {
         c.isLoading = false;
+        alert('Location data not loaded.');
         return;
       }
 
+      var matchedLocations = filterLocationsByIPs(ipList, c.data.locations);
+      if (!matchedLocations.length) {
+        c.isLoading = false;
+        alert('No matching IP data found.');
+        return;
+      }
+
+      console.log(']]>📦<![CDATA[ Sending matched locations to widget:', matchedLocations);
+
       spUtil.get('cd98ce74837222100daa76d6feaad378', {
-        locations: JSON.stringify(locations)
-      }).then(function(response) {
-        c.responseWidget = response;
+        locations: JSON.stringify(matchedLocations)
+      }).then(function(widgetResponse) {
+        c.responseWidget = widgetResponse;
         c.showResponseWidget = true;
         c.isLoading = false;
         $scope.$applyAsync();
@@ -165,14 +92,13 @@
     }, 100);
   };
 
-  // ✅ Reset UI
+  // ✅ Reset input and UI
   c.resetInput = function() {
     c.userMessage = '';
     c.showResponseWidget = false;
     c.responseWidget = null;
   };
-};
-]]></client_script>
+};]]></client_script>
         <controller_as>c</controller_as>
         <css>body {
   margin: 0;
@@ -290,23 +216,33 @@ button[disabled] {
         <public>true</public>
         <roles/>
         <script><![CDATA[(function() {
-  /* populate the 'data' object */
-  /* e.g., data.table = $sp.getValue('table'); */
+  var edgeGR = new GlideRecord("x_688732_custom_ap_enterprise_edge_details");
+  edgeGR.addEncodedQuery("enterprise_id=9^edge_id=32");
+  edgeGR.query();
 
+  if (edgeGR.next()) {
+    try {
+      data.locations = JSON.parse(edgeGR.ips_lat_lon_host); // assuming it's a JSON string
+    } catch (e) {
+      data.locations = [];
+    }
+  } else {
+    data.locations = [];
+  }
 })();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2025-07-26 14:06:27</sys_created_on>
         <sys_id>789bcc6883c722100daa76d6feaad3aa</sys_id>
-        <sys_mod_count>82</sys_mod_count>
+        <sys_mod_count>102</sys_mod_count>
         <sys_name>inputfield</sys_name>
         <sys_package display_value="Custom App" source="x_688732_custom_ap">2f350e63832222100daa76d6feaad3d5</sys_package>
         <sys_policy/>
         <sys_scope display_value="Custom App">2f350e63832222100daa76d6feaad3d5</sys_scope>
         <sys_update_name>sp_widget_789bcc6883c722100daa76d6feaad3aa</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2025-09-04 10:15:01</sys_updated_on>
+        <sys_updated_on>2025-11-03 07:59:04</sys_updated_on>
         <template><![CDATA[<div class="main-wrapper">
   <textarea id="userInput"
             ng-model="c.userMessage"

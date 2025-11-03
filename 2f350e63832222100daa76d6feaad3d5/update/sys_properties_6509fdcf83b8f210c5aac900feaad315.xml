@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices>x_688732_custom_ap_enterprise_edge_details_list</choices>
+        <description/>
+        <ignore_cache>true</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_688732_custom_ap.site.script</name>
+        <read_roles/>
+        <suffix>site.script</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-10-29 16:18:46</sys_created_on>
+        <sys_id>6509fdcf83b8f210c5aac900feaad315</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>x_688732_custom_ap.site.script</sys_name>
+        <sys_package display_value="Custom App" source="x_688732_custom_ap">2f350e63832222100daa76d6feaad3d5</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Custom App">2f350e63832222100daa76d6feaad3d5</sys_scope>
+        <sys_update_name>sys_properties_6509fdcf83b8f210c5aac900feaad315</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-10-31 11:46:14</sys_updated_on>
+        <type>string</type>
+        <value>var ipList = ["122.248.182.214","10.65.254.13"];&#13;
+&#13;
+var apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblV1aWQiOiI1ZTBlZDllZC00YzZmLTQ2MjYtYWRlYy0xNTExYThlZjJhMmEiLCJleHAiOjE3OTMyNjY5OTIsInV1aWQiOiJmN2NkNjRmZS00NDE4LTExZWEtYWFmNy0wMmE4NWNhZGY0NjAiLCJpYXQiOjE3NjE3MzEwMDV9.byv0-SaQ0q0bVegY6qZwAS2v3i9CA5-KNvj1dOkBOys';&#13;
+var orchestratorUrl = 'https://vco206-fra1.velocloud.net/portal/';&#13;
+&#13;
+var r = new sn_ws.RESTMessageV2();&#13;
+r.setEndpoint(orchestratorUrl + '/rest/enterprise/getEnterpriseEdges');&#13;
+r.setHttpMethod('POST');&#13;
+r.setRequestHeader("Authorization", "Token " + apiKey);&#13;
+r.setRequestHeader("Content-Type", "application/json");&#13;
+r.setRequestBody(JSON.stringify({&#13;
+    "enterpriseId": 9,&#13;
+    "id": 32,&#13;
+    "with": ["links", "site"]&#13;
+}));&#13;
+&#13;
+&#13;
+var res = r.execute();&#13;
+var statusCode = res.getStatusCode();&#13;
+var result = {};&#13;
+var objDetails = {};&#13;
+var objDetailsList = [];&#13;
+if (statusCode == 200) {&#13;
+    var edgeList = JSON.parse(res.getBody());&#13;
+}&#13;
+&#13;
+//var ipList = ["135.75.68.65", "192.168.1.1"]; // Add more IPs as needed&#13;
+// var edgeList = /* your parsed JSON array from the first API */;&#13;
+var matchedResults = [];&#13;
+&#13;
+for (var i = 0; i &lt; ipList.length; i++) {&#13;
+  var ip = ipList[i];&#13;
+  var matchedEdge = null;&#13;
+  var matchedLink = null;&#13;
+&#13;
+  for (var j = 0; j &lt; edgeList.length; j++) {&#13;
+    var edge = edgeList[j];&#13;
+    if (!edge.links) continue;&#13;
+&#13;
+    for (var k = 0; k &lt; edge.links.length; k++) {&#13;
+      var link = edge.links[k];&#13;
+      if (link.ipAddress === ip) {&#13;
+        matchedEdge = edge;&#13;
+        matchedLink = link;&#13;
+        break;&#13;
+      }&#13;
+    }&#13;
+&#13;
+    if (matchedEdge) break;&#13;
+  }&#13;
+&#13;
+  if (matchedEdge &amp;&amp; matchedLink) {&#13;
+    matchedResults.push({&#13;
+      ip: ip,&#13;
+      hostname: matchedEdge.dnsName || matchedEdge.name || matchedEdge.deviceId || "Unknown",&#13;
+      lat: matchedLink.lat || "",&#13;
+      lon: matchedLink.lon || ""&#13;
+    });&#13;
+  }&#13;
+}&#13;
+&#13;
+gs.info(JSON.stringify(matchedResults));</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=6509fdcf83b8f210c5aac900feaad315"/>
+</record_update>

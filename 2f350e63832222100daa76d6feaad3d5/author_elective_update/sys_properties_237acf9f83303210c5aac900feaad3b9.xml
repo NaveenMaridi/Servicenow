@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="DELETE">
+        <choices>- Share the bigger picture early so I can make smarter technical decisions that match business goals.&#13;
+- Give feedback on how I lead and solve problems, not just on the code I deliver — I often take on senior-level responsibilities.&#13;
+- Support time for exploring new tech, like chatbots or AI tools, so I can bring fresh ideas to the team&#13;
+</choices>
+        <description>What can my manager do to provide better feedback, coaching, or support to me?</description>
+        <ignore_cache>true</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_688732_custom_ap.evaluation.points</name>
+        <read_roles/>
+        <suffix>evaluation.points</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-10-30 16:53:23</sys_created_on>
+        <sys_id>237acf9f83303210c5aac900feaad3b9</sys_id>
+        <sys_mod_count>16</sys_mod_count>
+        <sys_name>x_688732_custom_ap.evaluation.points</sys_name>
+        <sys_package display_value="Custom App" source="x_688732_custom_ap">2f350e63832222100daa76d6feaad3d5</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Custom App">2f350e63832222100daa76d6feaad3d5</sys_scope>
+        <sys_update_name>sys_properties_237acf9f83303210c5aac900feaad3b9</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-10-31 16:27:52</sys_updated_on>
+        <type>string</type>
+        <value>- Led our team to the EquiTech competition finals by delivering a high-impact network path visualization component, directly contributing to our recognition at a strategic level.&#13;
+- Took on primary solutioning responsibilities in the absence of an architect, working closely with Product Owners to ensure alignment between technical design and business goals.&#13;
+- Delivered multiple concurrent projects (KANA, AVCP, BOOM) under tight timelines, demonstrating strong ownership, prioritization, and delivery discipline.&#13;
+- Mentored two new associates while maintaining delivery quality, contributing to team capability building and onboarding success.&#13;
+- Supported hiring efforts by evaluating and onboarding developers and testers, helping scale the team with the right talent.&#13;
+- Collaborated with the BDAS team to deliver the Boom order status view, improving visibility and operational efficiency.&#13;
+- Extended the digital notification framework via a reusable API-based POC, enabling multiple applications to adopt a consistent notification strategy&#13;
+</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="DELETE" query="documentkey=237acf9f83303210c5aac900feaad3b9"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Custom App">2f350e63832222100daa76d6feaad3d5</application>
+        <file_path/>
+        <instance_id>5ed94e81eb4b0e1c5a2dfceacad0cd73</instance_id>
+        <instance_name>dev277380</instance_name>
+        <name>sys_properties_237acf9f83303210c5aac900feaad3b9</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties"><sys_properties action="INSERT_OR_UPDATE"><choices>- Share the bigger picture early so I can make smarter technical decisions that match business goals.&#13;
+- Give feedback on how I lead and solve problems, not just on the code I deliver — I often take on senior-level responsibilities.&#13;
+- Support time for exploring new tech, like chatbots or AI tools, so I can bring fresh ideas to the team&#13;
+</choices><description>What can my manager do to provide better feedback, coaching, or support to me?</description><ignore_cache>true</ignore_cache><is_private>false</is_private><name>x_688732_custom_ap.evaluation.points</name><read_roles/><suffix>evaluation.points</suffix><sys_class_name>sys_properties</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-10-30 16:53:23</sys_created_on><sys_id>237acf9f83303210c5aac900feaad3b9</sys_id><sys_mod_count>16</sys_mod_count><sys_name>x_688732_custom_ap.evaluation.points</sys_name><sys_package display_value="Custom App" source="x_688732_custom_ap">2f350e63832222100daa76d6feaad3d5</sys_package><sys_policy/><sys_scope display_value="Custom App">2f350e63832222100daa76d6feaad3d5</sys_scope><sys_update_name>sys_properties_237acf9f83303210c5aac900feaad3b9</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-10-31 16:27:52</sys_updated_on><type>string</type><value>- Led our team to the EquiTech competition finals by delivering a high-impact network path visualization component, directly contributing to our recognition at a strategic level.&#13;
+- Took on primary solutioning responsibilities in the absence of an architect, working closely with Product Owners to ensure alignment between technical design and business goals.&#13;
+- Delivered multiple concurrent projects (KANA, AVCP, BOOM) under tight timelines, demonstrating strong ownership, prioritization, and delivery discipline.&#13;
+- Mentored two new associates while maintaining delivery quality, contributing to team capability building and onboarding success.&#13;
+- Supported hiring efforts by evaluating and onboarding developers and testers, helping scale the team with the right talent.&#13;
+- Collaborated with the BDAS team to deliver the Boom order status view, improving visibility and operational efficiency.&#13;
+- Extended the digital notification framework via a reusable API-based POC, enabling multiple applications to adopt a consistent notification strategy&#13;
+</value><write_roles/></sys_properties><sys_translated_text action="delete_multiple" query="documentkey=237acf9f83303210c5aac900feaad3b9"/></record_update>]]></payload>
+        <payload_hash>1084722319</payload_hash>
+        <record_name>x_688732_custom_ap.evaluation.points</record_name>
+        <reverted_from/>
+        <source>acdfc17c83f87210c5aac900feaad3ea</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-10-31 16:27:52</sys_created_on>
+        <sys_id>a64e843383b87210c5aac900feaad378</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>19a3b18ce580000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-10-31 16:27:52</sys_updated_on>
+        <type>System Property</type>
+        <update_guid>2e4e8433e4b87210ef36377abadc1e77</update_guid>
+        <update_guid_history>2e4e8433e4b87210ef36377abadc1e77:1084722319,70fdccff0678721055362caf46fa4f86:1971694193,cdad04bbe37872100f8494633a68be6b:-1380851821,c69c04bf8e787210de9e38217376645f:59234397,5f7b8c3fff787210b3d075c2d67aadcc:-1144025836,46da803fc1787210506e84f94ac7c311:-83695772,00d94cbbc7787210bbcc5aac9cfc1b3b:809981735,c8a904bb267872103173004f21be3150:1775039511,5e92db972d703210472e7030357499bc:-1027085187,766117537a703210e829b561bc352a46:482590764,0aa0df57db70321023697387ac337671:-1516844706,aa00df57ba70321003e5c6a273ecf83a:597021835,d88f8f9f83303210222101d3a7e23fac:203728787,395d479fa6303210525f2c67ece8d898:-1925588279,967c0b5362703210ca59a4692db71462:-2064225262,c54c07535b703210a1d1f278b233bc04:-1012572126,f68a03df4c303210b837d4839f1d8cc0:966292723</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-10-31 16:33:31</sys_created_on>
+        <sys_db_object display_value="" name="sys_properties">sys_properties</sys_db_object>
+        <sys_id>0043da2707bb4868800e6456d0b61310</sys_id>
+        <sys_metadata>237acf9f83303210c5aac900feaad3b9</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_688732_custom_ap.evaluation.points</sys_name>
+        <sys_package display_value="Custom App" source="x_688732_custom_ap">2f350e63832222100daa76d6feaad3d5</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Custom App">2f350e63832222100daa76d6feaad3d5</sys_scope>
+        <sys_scope_delete display_value="">124dcbff2d7e453985089e71cbfbd9a1</sys_scope_delete>
+        <sys_update_name>sys_properties_237acf9f83303210c5aac900feaad3b9</sys_update_name>
+        <sys_update_version display_value="sys_properties_237acf9f83303210c5aac900feaad3b9">a64e843383b87210c5aac900feaad378</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-10-31 16:33:31</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>
